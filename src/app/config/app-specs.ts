@@ -6,8 +6,8 @@ export const AppDefaults = {
   APP_NAME: 'FletNix',
   APP_DESCRIPTION: 'Filter and Search for no charge at all!',
 
-  APP_VERSION: '0.1.0',
-  APP_BUILD: '2',
+  APP_VERSION: '0.1.1',
+  APP_BUILD: '3',
 };
 
 export const V1_APIS = environment.DOMAIN + '/v1';

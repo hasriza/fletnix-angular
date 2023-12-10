@@ -152,6 +152,7 @@ export class ListingComponent implements OnInit {
     dateSort?: number | any;
   } = {}) {
     this.dateSorter = dateSort;
+    dateSort && this.scrollToTop();
     this.contentServ.getContents({
       searchVal: searchVal || undefined,
       type,
