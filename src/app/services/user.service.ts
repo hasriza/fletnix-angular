@@ -4,6 +4,7 @@ import { ApiService } from './api.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { BehaviorSubject } from 'rxjs';
 import { LocalStoreService } from './local-store.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,8 @@ export class UserService {
   constructor(
     private api: ApiService,
     private message: NzMessageService,
-    private localStore: LocalStoreService
+    private localStore: LocalStoreService,
+    private router: Router
   ) {}
 
   isAuthenticated: WritableSignal<boolean> = signal(
@@ -51,6 +53,9 @@ export class UserService {
     this.setTokens(response.tokens);
     this.updateuserDetails(response.user);
     this.updateAuthenticatedValue(!!response.user);
+    const lastPath = this.localStore.getLastPath();
+    this.router.navigateByUrl(lastPath || '/content');
+    this.localStore.removeLastPath();
   }
 
   registerUser(formValues: any) {
@@ -129,6 +134,7 @@ export class UserService {
           this.updateAuthenticatedValue(false);
           this.updateuserDetails({});
           this.localStore.logoutClearLocal();
+          this.router.navigateByUrl('/auth');
         },
         (error: any) => {
           this.message.error(error?.error?.message || error?.message);

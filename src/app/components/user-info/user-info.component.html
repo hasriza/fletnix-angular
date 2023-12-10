@@ -1,1 +1,34 @@
-<app-private-header />
+<app-private-header [headerTitle]="userData?.name + ' Profile'" />
+
+<nz-content>
+  <nz-card
+    [nzBodyStyle]="{ padding: '4px',
+    display: 'flex',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+    fontSize: '1.4rem', }"
+    [style]="{ margin: '12px', height: '100%', display: 'flex' }"
+    nzHoverable
+  >
+    <ng-icon name="heroUserCircle" [style]="{ fontSize: '20vh' }" />
+    <div style="display: flex; margin-top: 2rem">
+      <div style="display: flex; flex-direction: column; margin-right: 1rem">
+        <span>Name:</span>
+        <span>Age:</span>
+        <span>DOB:</span>
+        <span>Email:</span>
+      </div>
+      <div style="display: flex; flex-direction: column">
+        <span> {{ userData?.name }}</span>
+        <span>{{ userData?.age }}</span>
+        <span>{{ userData?.dob | date : "dd/MM/YYYY" }}</span>
+        <span>{{ userData?.email }}</span>
+      </div>
+    </div>
+    <button nz-button style="margin-top: 1rem" (click)="submitLogout()">
+      Logout
+    </button>
+  </nz-card>
+</nz-content>

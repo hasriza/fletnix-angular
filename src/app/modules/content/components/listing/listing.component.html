@@ -1,1 +1,138 @@
 <app-private-header headerTitle="Content" />
+
+<nz-content>
+  <div
+    style="
+      margin: 1.4rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    "
+  >
+    <div>
+      <nz-radio-group
+        [(ngModel)]="showType"
+        style="margin-bottom: 1rem; margin-right: 4px"
+        (ngModelChange)="updateShowType($event)"
+      >
+        <label nz-radio-button nzValue="all">All</label>
+        <label nz-radio-button nzValue="Movie">Movies</label>
+        <label nz-radio-button nzValue="TV Show">TV Shows</label>
+      </nz-radio-group>
+      <button
+        nz-button
+        nzType="primary"
+        aria-label="Date Sorter"
+        (click)="fetchList({ dateSort: getDateSorterNextState(), page: 1 })"
+      >
+        <ng-icon name="heroCalendar" />
+        <ng-icon *ngIf="dateSorter && dateSorter === 1" name="heroArrowUp" />
+        <ng-icon *ngIf="dateSorter && dateSorter === -1" name="heroArrowDown" />
+      </button>
+    </div>
+
+    <nz-input-group [nzSuffix]="suffixIconSearch" class="formClass">
+      <input
+        type="text"
+        nz-input
+        [placeholder]="
+          'Search ' +
+          (showType === 'all' ? 'Movies & TV Shows' : showType + 's')
+        "
+        (ngModelChange)="handleSearchChange($event)"
+        [(ngModel)]="searchValue"
+      />
+    </nz-input-group>
+    <ng-template #suffixIconSearch>
+      <button
+        nz-button
+        nzType="primary"
+        nzSearch
+        (click)="handleSearch()"
+        [nzLoading]="fetchLoading"
+      >
+        <ng-icon name="heroMagnifyingGlass" />
+      </button>
+    </ng-template>
+
+    <div
+      style="
+        margin-top: 12px;
+        overflow-y: scroll;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      "
+      class="rowClass"
+      [ngStyle]="{ height: containerHeight + 'px' }"
+      infiniteScroll
+      [infiniteScrollDistance]="3"
+      [infiniteScrollThrottle]="500"
+      [infiniteScrollDisabled]="
+        contentRes?.showsList?.length === contentRes?.totalResults
+      "
+      (scrolled)="fetchList()"
+      [scrollWindow]="false"
+      #infxScroll
+    >
+      <div
+        *ngIf="!contentRes?.showsList?.length && !fetchLoading"
+        style="display: flex; justify-content: center; align-items: center"
+        [ngStyle]="{ height: containerHeight + 'px' }"
+      >
+        <nz-empty
+          nzNotFoundImage="simple"
+          [nzNotFoundContent]="emptyDescription"
+        ></nz-empty>
+        <ng-template #emptyDescription>
+          <span style="color: #fff"> Sorry, no content found! </span>
+        </ng-template>
+      </div>
+
+      <div nz-row [nzGutter]="[12, 24]" style="width: 100%">
+        <div
+          nz-col
+          [nzXs]="{ span: 24 }"
+          [nzLg]="{ span: 8 }"
+          *ngFor="let item of contentRes?.showsList"
+        >
+          <nz-card
+            [nzTitle]="item?.title"
+            [nzBodyStyle]="{ padding: '4px' }"
+            nzHoverable
+            (click)="showItemDetails(item)"
+            ><nz-skeleton
+              [nzLoading]="fetchLoading"
+              [nzActive]="true"
+              [nzTitle]="false"
+              [nzParagraph]="{ rows: 1 }"
+            >
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  margin: 0 1rem;
+                "
+              >
+                <span>{{ item.date_added || "-" }}</span>
+                <span *ngIf="showType === 'all'" style="font-weight: bold">{{
+                  item.type || "-"
+                }}</span>
+                <span>{{ item.duration || "-" }}</span>
+              </div>
+            </nz-skeleton>
+          </nz-card>
+        </div>
+      </div>
+      <div *ngIf="fetchLoading" style="width: 100%; text-align: center">
+        <nz-spin nzSimple [nzSize]="'large'"></nz-spin>
+      </div>
+      <nz-divider
+        *ngIf="!fetchLoading && contentRes?.showsList?.length"
+        nzPlain
+        style="color: #fff"
+        nzText="It is all, nothing more 🤐"
+      />
+    </div>
+  </div>
+</nz-content>

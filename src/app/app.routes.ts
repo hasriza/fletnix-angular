@@ -27,6 +27,7 @@ export const routes: Routes = [
       import('./components/user-info/user-info.component').then(
         (m) => m.UserInfoComponent
       ),
+    title: 'User Info',
     canActivate: [AuthGuard],
   },
   {

@@ -55,9 +55,28 @@ input {
   width: 400px;
 }
 
+.rowClass {
+  width: 96vw;
+}
+
+.detailsFlex,
+.detailsText {
+}
+
 @media (max-width: 767px) {
   .formClass {
     width: 80vw;
+  }
+
+  .rowClass {
+  }
+
+  .detailsFlex {
+    justify-content: space-between;
+  }
+
+  .detailsText {
+    text-align: right;
   }
 
   .homeContent {

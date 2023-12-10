@@ -25,6 +25,7 @@ export class LocalStoreService {
   ACCESS_TOKEN_KEY: string = 'accessToken';
   ACCESS_TOKEN_KEY_EXPIRATION: string = 'accessTokenExpiration';
   REFRESH_TOKEN_KEY_EXPIRATION: string = 'refreshTokenExpiration';
+  LAST_PATH: string = 'lastPath';
 
   setLocalStorage = (name: string, value: any) => {
     if (this.localStorageRef) {
@@ -77,6 +78,13 @@ export class LocalStoreService {
       }
     }
   };
+
+  setLastPath = (lastPath: string) =>
+    this.setLocalStorage(this.LAST_PATH, lastPath);
+
+  getLastPath = () => this.getLocalStorage(this.LAST_PATH);
+
+  removeLastPath = () => this.removeLocalStorage(this.LAST_PATH);
 
   setAccessToken = (token: string) =>
     this.setLocalStorage(this.ACCESS_TOKEN_KEY, token);

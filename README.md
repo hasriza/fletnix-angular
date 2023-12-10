@@ -2,6 +2,14 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.6.
 
+## Add environment variables
+
+`ng generate environments`
+export const environment = {
+isProd: false,
+DOMAIN: 'http://localhost:3001', `backend server`
+};
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.

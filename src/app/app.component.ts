@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzConfig, NZ_CONFIG } from 'ng-zorro-antd/core/config';
 import { UserService } from './services/user.service';
 import { differenceInMinutes, parseISO, sub } from 'date-fns';
 import { LocalStoreService } from './services/local-store.service';
+import { Subscription } from 'rxjs';
 
 const ngZorroConfig: NzConfig = {
   theme: {
@@ -24,9 +25,16 @@ const ngZorroConfig: NzConfig = {
 export class AppComponent implements OnInit {
   constructor(
     private userServ: UserService,
-    private localStore: LocalStoreService
+    private localStore: LocalStoreService,
+    private route: Router
   ) {
     this.localStore.clearCacheAndHardReload();
+    let subscription: Subscription = this.route.events.subscribe((val: any) => {
+      if (val?.url === '/auth' || val?.url === '/') {
+        this.localStore.removeLastPath();
+      } else this.localStore.setLastPath(val?.url);
+      subscription.unsubscribe();
+    });
   }
 
   refreshToken = this.localStore.getRefreshToken();

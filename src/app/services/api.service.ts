@@ -64,11 +64,14 @@ export class ApiService {
       );
     }
 
-    return (this.http as any)
-      [requestType](url, body, { headers: requestHeaders })
-      .pipe(
-        catchError((error) => this.handleHttpError(error as HttpErrorResponse)),
-        this.parseJson
-      );
+    const requestParams =
+      requestType === 'post'
+        ? [url, body, { headers: requestHeaders }]
+        : [url, { headers: requestHeaders }];
+
+    return (this.http as any)[requestType](...requestParams).pipe(
+      catchError((error) => this.handleHttpError(error as HttpErrorResponse)),
+      this.parseJson
+    );
   }
 }

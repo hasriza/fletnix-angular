@@ -1,1 +1,80 @@
-<p>details works!</p>
+<app-private-header [headerTitle]="details?.title" />
+<nz-content>
+  <nz-card
+    [nzTitle]="details?.title"
+    [nzBodyStyle]="{ padding: '12px' }"
+    [style]="{ margin: '8px' }"
+    ><nz-skeleton
+      [nzLoading]="detailsLoading"
+      [nzActive]="true"
+      [nzParagraph]="{ rows: 5 }"
+    >
+      <div nz-row nzJustify="space-between">
+        <div nz-col [nzXs]="{ span: 24 }" [nzLg]="{ span: 8 }">
+          <div style="display: flex; font-size: 1rem" class="detailsFlex">
+            <div
+              style="
+                display: flex;
+                flex-direction: column;
+                font-weight: bold;
+                margin-right: 12px;
+              "
+            >
+              <span>Release:</span>
+              <span>Duration:</span>
+              <span>Type:</span>
+            </div>
+            <div
+              style="display: flex; flex-direction: column"
+              class="detailsText"
+            >
+              <span> {{ details?.release_year || "-" }}</span>
+              <span>{{ details?.duration || "-" }}</span>
+              <span>{{ details?.type || "-" }}</span>
+            </div>
+          </div>
+        </div>
+        <div nz-col [nzXs]="{ span: 24 }" [nzLg]="{ span: 8 }">
+          <div style="display: flex; font-size: 1rem" class="detailsFlex">
+            <div
+              style="
+                display: flex;
+                flex-direction: column;
+                font-weight: bold;
+                margin-right: 12px;
+              "
+            >
+              <span>Rating:</span>
+              <span>Country:</span>
+              <span>Date Added:</span>
+            </div>
+            <div
+              style="display: flex; flex-direction: column"
+              class="detailsText"
+            >
+              <span> {{ details?.rating || "-" }}</span>
+              <span>{{ details?.country || "-" }}</span>
+              <span>{{ details?.date_added || "-" }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <span style="font-size: 1rem; display: flex" class="detailsFlex">
+        <span style="font-weight: bold; margin-right: 12px"> Listed in: </span>
+        <span>{{ details?.listed_in }}</span>
+      </span>
+
+      <div
+        *ngIf="!!details?.cast"
+        style="padding: 1rem 0; font-size: 1rem; margin-top: 12px"
+      >
+        <span style="font-weight: bold">Cast: </span>
+        <span>{{ details?.cast }}</span>
+      </div>
+
+      <p style="font-size: 1.2rem; font-style: italic; margin-top: 12px">
+        {{ details?.description }}
+      </p>
+    </nz-skeleton>
+  </nz-card>
+</nz-content>
