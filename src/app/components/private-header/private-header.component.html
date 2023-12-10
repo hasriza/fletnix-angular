@@ -1,0 +1,15 @@
+<nz-header style="justify-content: space-between"
+  ><div
+    class="wrapTextEllipsis"
+    style="color: #fff; font-size: 1.4rem; font-weight: bold"
+  >
+    <ng-icon name="heroArrowLeft" (click)="goBack()"></ng-icon>
+    <span>{{ headerTitle }}</span>
+  </div>
+  <span
+    *ngIf="isNotUserPage()"
+    style="color: #fff; font-size: 1.2rem; cursor: pointer"
+  >
+    <a routerLink="/user-info"><ng-icon name="heroUserCircle" /></a>
+  </span>
+</nz-header>

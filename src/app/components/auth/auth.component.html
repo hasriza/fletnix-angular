@@ -1,0 +1,116 @@
+<div
+  style="display: flex; flex: 1; justify-content: center; align-items: center"
+>
+  <nz-card
+    [nzBodyStyle]="{ padding: '0 1rem 1rem 1rem' }"
+    [nzTitle]="extraTemplate"
+    nzHoverable
+  >
+    <ng-template #extraTemplate>
+      <div style="width: 100%; text-align: center">
+        <span style="font-size: 1.4rem">{{
+          activeTab === "register" ? "Join FletNix!" : "Free search!"
+        }}</span>
+      </div>
+    </ng-template>
+
+    <nz-tabset nzCentered>
+      <nz-tab nzTitle="Register" (nzClick)="onTabChanged('register')" />
+      <nz-tab nzTitle="Login" (nzClick)="onTabChanged('login')" />
+    </nz-tabset>
+
+    <form
+      nz-form
+      [name]="['auth-user']"
+      [nzLayout]="formLayout"
+      [formGroup]="validateForm"
+      (ngSubmit)="submitForm()"
+      class="formClass"
+    >
+      <nz-form-item *ngIf="activeTab === 'register'">
+        <nz-form-control nzHasFeedback [nzErrorTip]="userErrorTpl">
+          <input nz-input formControlName="name" placeholder="Name" />
+          <ng-template #userErrorTpl let-control>
+            <ng-container *ngIf="control.hasError('required')"
+              >Please input your name!</ng-container
+            >
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control nzHasFeedback [nzErrorTip]="emailErrorTpl">
+          <input
+            nz-input
+            formControlName="email"
+            placeholder="Email"
+            type="email"
+          />
+          <ng-template #emailErrorTpl let-control>
+            <ng-container *ngIf="control.hasError('email')"
+              >The input is not valid E-mail!</ng-container
+            >
+            <ng-container *ngIf="control.hasError('required')"
+              >Please input your E-mail!</ng-container
+            >
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item *ngIf="activeTab === 'register'">
+        <nz-form-control nzHasFeedback [nzErrorTip]="dobErrorTpl">
+          <nz-date-picker
+            name="dob"
+            style="width: 100%"
+            [nzDisabledDate]="disabledDate"
+            nzFormat="dd-MM-YYYY"
+            formControlName="dob"
+            [nzDefaultPickerValue]="defaultDate"
+          />
+          <ng-template #dobErrorTpl let-control>
+            <ng-container *ngIf="control.hasError('required')"
+              >Please input your date of birth!</ng-container
+            >
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control nzHasFeedback nzErrorTip="Please input your password!">
+          <input
+            nz-input
+            type="password"
+            formControlName="password"
+            placeholder="Password"
+            (ngModelChange)="validateConfirmPassword()"
+          />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item *ngIf="activeTab === 'register'">
+        <nz-form-control nzHasFeedback [nzErrorTip]="passwordErrorTpl">
+          <input
+            nz-input
+            type="password"
+            formControlName="confirm"
+            placeholder="Confirm password"
+          />
+          <ng-template #passwordErrorTpl let-control>
+            <ng-container *ngIf="control.hasError('required')"
+              >Please confirm your password!</ng-container
+            >
+            <ng-container *ngIf="control.hasError('confirm')"
+              >Password is inconsistent!</ng-container
+            >
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item style="text-align: center; padding: 0; margin: 0">
+        <nz-form-control>
+          <button nz-button nzType="primary" [nzLoading]="loading">
+            {{ activeTab === "register" ? "Register" : "Login" }}
+          </button>
+        </nz-form-control>
+      </nz-form-item>
+      <div style="text-align: center; width: 100%; margin-top: 12px">
+        <button nz-button nzType="link" routerLink="/">Home Page</button>
+      </div>
+    </form>
+  </nz-card>
+</div>

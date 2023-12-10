@@ -1,1 +1,66 @@
 /* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+.ant-layout-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.ant-layout {
+  background-color: #223547;
+  width: 100vw;
+}
+
+.ant-layout-header {
+  display: flex;
+  align-items: center;
+  height: 48px;
+  padding: 12px;
+}
+
+.ant-card {
+  box-shadow: rgba(0, 0, 0, 0.1) 2px 2px 3px;
+  border-radius: 8px;
+}
+
+.ant-btn {
+  border-radius: 25px;
+}
+
+.wrapTextEllipsis {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+input {
+  width: 100%;
+}
+
+.homeContent {
+  align-items: center;
+}
+
+.formClass {
+  width: 400px;
+}
+
+@media (max-width: 767px) {
+  .formClass {
+    width: 80vw;
+  }
+
+  .homeContent {
+    align-items: flex-start;
+  }
+}
