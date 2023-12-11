@@ -2,7 +2,7 @@ import { Injectable, WritableSignal, signal } from '@angular/core';
 import { AUTH_APIS } from '../config/app-specs';
 import { ApiService } from './api.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, finalize } from 'rxjs';
 import { LocalStoreService } from './local-store.service';
 import { Router } from '@angular/router';
 
@@ -63,17 +63,21 @@ export class UserService {
 
     const requestURL = AUTH_APIS + '/register';
 
-    this.api.request(requestURL, formValues, false).subscribe(
-      (response: any) => {
-        this.successfulAuth(response);
-      },
-      (error: any) => {
-        this.message.error(error?.error?.message || error?.message);
-      }
-    );
-
-    this.updateAuthLoadingValue(false);
-    return;
+    this.api
+      .request(requestURL, formValues, false)
+      .pipe(
+        finalize(() => {
+          this.updateAuthLoadingValue(false);
+        })
+      )
+      .subscribe(
+        (response: any) => {
+          this.successfulAuth(response);
+        },
+        (error: any) => {
+          this.message.error(error?.error?.message || error?.message);
+        }
+      );
   }
 
   loginUser(formValues: any) {
@@ -81,17 +85,21 @@ export class UserService {
 
     const requestURL = AUTH_APIS + '/login';
 
-    this.api.request(requestURL, formValues, false).subscribe(
-      (response: any) => {
-        this.successfulAuth(response);
-      },
-      (error: any) => {
-        this.message.error(error?.error?.message || error?.message);
-      }
-    );
-
-    this.updateAuthLoadingValue(false);
-    return;
+    this.api
+      .request(requestURL, formValues, false)
+      .pipe(
+        finalize(() => {
+          this.updateAuthLoadingValue(false);
+        })
+      )
+      .subscribe(
+        (response: any) => {
+          this.successfulAuth(response);
+        },
+        (error: any) => {
+          this.message.error(error?.error?.message || error?.message);
+        }
+      );
   }
 
   refreshUser() {
@@ -103,6 +111,11 @@ export class UserService {
       .request(requestURL, {
         refreshToken: this.localStore.getRefreshToken(),
       })
+      .pipe(
+        finalize(() => {
+          this.updateAuthLoadingValue(false);
+        })
+      )
       .subscribe(
         (response: any) => {
           this.successfulAuth(response);
@@ -111,9 +124,6 @@ export class UserService {
           this.message.error(error?.error?.message || error?.message);
         }
       );
-
-    this.updateAuthLoadingValue(false);
-    return;
   }
 
   logUserOut() {
@@ -129,6 +139,11 @@ export class UserService {
         },
         false
       )
+      .pipe(
+        finalize(() => {
+          this.updateAuthLoadingValue(false);
+        })
+      )
       .subscribe(
         (response: any) => {
           this.updateAuthenticatedValue(false);
@@ -140,8 +155,5 @@ export class UserService {
           this.message.error(error?.error?.message || error?.message);
         }
       );
-
-    this.updateAuthLoadingValue(false);
-    return;
   }
 }

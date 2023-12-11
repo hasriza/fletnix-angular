@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, finalize } from 'rxjs';
 import { V1_APIS } from '../../../config/app-specs';
 import { ApiService } from '../../../services/api.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -46,24 +46,28 @@ export class ContentService {
 
     const requestURL = V1_APIS + '/content';
 
-    this.api.request(requestURL, payload, true).subscribe(
-      (response: any) => {
-        this.updateContentListResponseValue({
-          ...response,
-          showsList:
-            payload?.page === 1
-              ? response?.showsList
-              : [...this.showsList, ...response?.showsList],
-          nextPage: payload.page + 1,
-        });
-      },
-      (error: any) => {
-        this.message.error(error?.error?.message || error?.message);
-      }
-    );
-
-    this.updateContentLoadingValue(false);
-    return;
+    this.api
+      .request(requestURL, payload, true)
+      .pipe(
+        finalize(() => {
+          this.updateContentLoadingValue(false);
+        })
+      )
+      .subscribe(
+        (response: any) => {
+          this.updateContentListResponseValue({
+            ...response,
+            showsList:
+              payload?.page === 1
+                ? response?.showsList
+                : [...this.showsList, ...response?.showsList],
+            nextPage: payload.page + 1,
+          });
+        },
+        (error: any) => {
+          this.message.error(error?.error?.message || error?.message);
+        }
+      );
   }
 
   getDetails(showId: string) {
@@ -71,16 +75,20 @@ export class ContentService {
 
     const requestURL = V1_APIS + '/content/' + showId;
 
-    this.api.request(requestURL, {}, true, 'get').subscribe(
-      (response: any) => {
-        this.updateContentDetailsValue(response.showDetails);
-      },
-      (error: any) => {
-        this.message.error(error?.error?.message || error?.message);
-      }
-    );
-
-    this.updateContentLoadingValue(false);
-    return;
+    this.api
+      .request(requestURL, {}, true, 'get')
+      .pipe(
+        finalize(() => {
+          this.updateContentLoadingValue(false);
+        })
+      )
+      .subscribe(
+        (response: any) => {
+          this.updateContentDetailsValue(response.showDetails);
+        },
+        (error: any) => {
+          this.message.error(error?.error?.message || error?.message);
+        }
+      );
   }
 }
