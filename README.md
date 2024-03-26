@@ -1,6 +1,10 @@
 # FletnixAngular
+MEAN stack version of the search and filter tool developed to go through Movies and TV shows. [Tasks List](https://drive.google.com/file/d/11auWl_KUrOhJlDL-xudumdA05rWvh2ZW/view)
+
+[Demo](https://fletnix-angular.vercel.app/)
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.6.
+
 
 ## Add environment variables
 
